@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/ysvEnvivo"
+            android:icon="@drawable/ysv_live"
+            android:title="En Vivo"
+            />
+        <item android:id="@+id/ysvEquipo"
+            android:icon="@drawable/ysv_equipo_icoon"
+            android:title="Equipo"
+            />
+        <item android:id="@+id/ysvPartidos"
+            android:icon="@drawable/ysv_partido_icon"
+            android:title="Partidos"
+            />
+        <item android:id="@+id/ysvTemporadas"
+            android:icon="@drawable/ysv_temporada_icon"
+            android:title="Temporadas"
+            />
+        <item android:id="@+id/ysvAdmin"
+            android:icon="@drawable/ysv_admin_icon"
+            android:title="Administrador"
+            />
+    </group>
+</menu>

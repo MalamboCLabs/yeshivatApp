@@ -11,4 +11,7 @@
     <color name="color_ysv_one">#6b151d</color>
     <color name="color_ysv_two">#6b151d</color>
     <color name="redError">#FF4343</color> <!-- Letras rojas -->
+    <color name="noneSpaceRW">#F6F7F9</color>
+    <color name="purpleToolBarRW">#8200FF</color>
+    <color name="transparent">#00000000</color>
 </resources>

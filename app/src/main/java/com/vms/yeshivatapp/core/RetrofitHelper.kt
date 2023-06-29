@@ -7,7 +7,7 @@ object RetrofitHelper {
     fun getRetrofit(): Retrofit {
 
         return Retrofit.Builder()
-            .baseUrl("http://167.71.22.22/api/v1/")
+            .baseUrl("http://emunafutbol.com:3000/api/v1/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }

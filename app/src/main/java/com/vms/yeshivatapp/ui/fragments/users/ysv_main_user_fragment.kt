@@ -11,6 +11,7 @@ import com.google.android.material.navigation.NavigationView
 import com.vms.yeshivatapp.R
 import com.vms.yeshivatapp.ui.fragments.users.equipo.ysv_equipo_fragment
 import com.vms.yeshivatapp.ui.fragments.users.live.ysv_envivo_fragment
+import com.vms.yeshivatapp.ui.fragments.users.partidos.ysv_partidos_fragment
 
 class ysv_main_user_fragment: AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var drawerLayout: DrawerLayout
@@ -40,7 +41,8 @@ class ysv_main_user_fragment: AppCompatActivity(), NavigationView.OnNavigationIt
                 .replace(R.id.fragment_container, ysv_envivo_fragment()).commit()
             R.id.ysvEquipo -> supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, ysv_equipo_fragment()).commit()
-            //R.id.dsiInnovaApi
+            R.id.ysvPartidos -> supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, ysv_partidos_fragment()).commit()
         }
         drawerLayout.closeDrawer(GravityCompat.START)
         return true

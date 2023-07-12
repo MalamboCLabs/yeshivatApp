@@ -28,4 +28,11 @@
         <!-- Customize your theme here. -->
         <item name="android:navigationBarColor">@color/color_ysv_two</item>
     </style>
+    <style name="FullScreenDialog">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
 </resources>

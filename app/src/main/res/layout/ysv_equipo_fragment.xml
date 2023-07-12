@@ -10,6 +10,8 @@
         android:layout_width="373dp"
         android:layout_height="191dp"
         android:layout_margin="10dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_weight="1"
         app:cardCornerRadius="20dp"
         app:cardElevation="10dp"
@@ -29,7 +31,7 @@
                 android:layout_below="@+id/ysvIconoEquip"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp"
-                android:text="Todos los Equipos"
+                android:text="Equipos"
                 android:textColor="@color/color_ysv_one"
                 android:textSize="20sp" />
 
@@ -45,6 +47,7 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/btnGotoNEquipos"
         android:layout_width="373dp"
         android:layout_height="191dp"
         android:layout_margin="10dp"
@@ -68,12 +71,50 @@
                 android:layout_below="@+id/iconResult"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp"
-                android:text="Todos los Resultados"
+                android:text="Registrar nuevo Equipo"
                 android:textColor="@color/color_ysv_one"
                 android:textSize="20sp" />
 
             <ImageView
                 android:id="@+id/iconResult"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="15dp"
+                android:src="@drawable/iconoresultados" />
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/btnGotoREquipos"
+        android:layout_width="373dp"
+        android:layout_height="191dp"
+        android:layout_margin="10dp"
+        android:layout_weight="1"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnGotoNEquipos">
+        <RelativeLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tvResultadosR"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/iconResultR"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:text="Resultados Equipos"
+                android:textColor="@color/color_ysv_one"
+                android:textSize="20sp" />
+
+            <ImageView
+                android:id="@+id/iconResultR"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:layout_centerHorizontal="true"

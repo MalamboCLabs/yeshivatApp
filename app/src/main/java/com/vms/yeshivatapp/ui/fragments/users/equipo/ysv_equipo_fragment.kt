@@ -9,9 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.vms.yeshivatapp.R
 import com.vms.yeshivatapp.databinding.YsvEquipoFragmentBinding
+import com.vms.yeshivatapp.ui.fragments.users.equipo.nuevoEquipo.YsvRegistrarEquipoNuevoFragment
+import com.vms.yeshivatapp.ui.fragments.users.equipo.resultadosEquipo.YsvResultadosEquipoFragment
 import com.vms.yeshivatapp.ui.fragments.users.equipo.viewmodel.YsvEquipoViewModel
-import com.vms.yeshivatapp.ui.fragments.users.live.ysv_envivo_fragment
-import com.vms.yeshivatapp.ui.fragments.users.ysv_main_user_fragment
 
 class ysv_equipo_fragment : Fragment() {
     private lateinit var equipoFragmentViewModel: YsvEquipoViewModel
@@ -35,6 +35,23 @@ class ysv_equipo_fragment : Fragment() {
                 .replace(R.id.fragment_container, newFragment) // Reemplaza "fragmentContainer" con el ID del contenedor de fragmentos en tu actividad
                 .addToBackStack(null) // Opcionalmente, agrega el fragmento actual a la pila de retroceso
                 .commit()
+        }
+        binding.btnGotoNEquipos.setOnClickListener {
+            val newFragment = YsvRegistrarEquipoNuevoFragment() // Reemplaza "NewFragment" con el nombre de tu nuevo fragmento
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, newFragment) // Reemplaza "fragmentContainer" con el ID del contenedor de fragmentos en tu actividad
+                .addToBackStack(null) // Opcionalmente, agrega el fragmento actual a la pila de retroceso
+                .commit()
+
+        }
+
+        binding.btnGotoREquipos.setOnClickListener {
+            val newFragment = YsvResultadosEquipoFragment() // Reemplaza "NewFragment" con el nombre de tu nuevo fragmento
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, newFragment) // Reemplaza "fragmentContainer" con el ID del contenedor de fragmentos en tu actividad
+                .addToBackStack(null) // Opcionalmente, agrega el fragmento actual a la pila de retroceso
+                .commit()
+
         }
         return root
     }

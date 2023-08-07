@@ -9,7 +9,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="gray_middle_1">#C2C2C2</color>
     <color name="color_ysv_one">#6b151d</color>
-    <color name="color_ysv_two">#6b151d</color>
+    <color name="color_ysv_two">#581F18</color>
+    <color name="color_ysv_secondary">#1976d2</color>
     <color name="redError">#FF4343</color> <!-- Letras rojas -->
     <color name="noneSpaceRW">#F6F7F9</color>
     <color name="purpleToolBarRW">#8200FF</color>

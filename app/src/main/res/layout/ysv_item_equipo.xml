@@ -1,75 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_margin="10dp"
-    android:layout_weight="1"
+    android:layout_marginStart="12dp"
+    android:layout_marginEnd="12dp"
+    android:layout_marginVertical="10dp"
+    android:layout_marginHorizontal="10dp"
     app:cardCornerRadius="20dp"
-    app:cardElevation="10dp">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+    app:cardElevation="8dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <ImageView
-            android:id="@+id/ivShop"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginBottom="24dp"
-            android:src="@drawable/ysvlogo"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/linearLayout"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <LinearLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="177dp"
-            android:layout_height="123dp"
-            android:layout_marginEnd="24dp"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                android:id="@+id/textView7"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:textStyle="bold"
-                android:textAlignment="center"
-                android:text="TextView"
-                tools:text="NOMBRE DEL EQUIPO"/>
-
-            <TextView
-                android:id="@+id/textView6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:textStyle="normal"
-                android:text="TextView"
-                tools:text="DESCRIPCIÓN PEQUEÑA"/>
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnMoreInfo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
-
-                android:layout_margin="10dp"
-                android:visibility="gone"
-                android:text="Información" />
-
-        </LinearLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
+        android:layout_height="wrap_content">
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:id="@+id/listImage"
+            android:src="@drawable/americalogo"
+            android:scaleType="centerCrop"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"/>
+        <TextView
+            android:layout_width="120dp"
+            android:layout_height="30dp"
+            android:id="@+id/listName"
+            android:text="Name"
+            android:textColor="@color/color_ysv_one"
+            android:textSize="20sp"
+            android:layout_marginTop="25dp"
+            android:layout_marginStart="30dp"
+            android:layout_toEndOf="@id/listImage"/>
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:id="@+id/listTime"
+            android:text="Mas"
+            android:visibility="gone"
+            android:textSize="16sp"
+            android:layout_toEndOf="@id/listName"
+            android:layout_marginTop="25dp"
+            android:layout_marginStart="100dp"
+            android:textColor="@color/color_ysv_one"/>
+    </RelativeLayout>
 </androidx.cardview.widget.CardView>

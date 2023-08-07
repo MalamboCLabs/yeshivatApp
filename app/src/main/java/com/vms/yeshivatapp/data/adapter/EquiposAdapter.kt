@@ -15,9 +15,9 @@ import com.vms.yeshivatapp.ui.fragments.users.equipo.dialog.ysv_dialog_team_memb
 class EquiposAdapter(private val dataList: List<Equipo>, private val fragmentManager: FragmentManager) : RecyclerView.Adapter<EquiposAdapter.MyViewHolder>(){
     private var onItemClickListener: OnItemClickListener? = null
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val titleTextView: TextView = itemView.findViewById(R.id.textView7)
-        val descriptionTextView: TextView = itemView.findViewById(R.id.textView6)
-        val btnMoreInfo: Button = itemView.findViewById(R.id.btnMoreInfo)
+        val titleTextView: TextView = itemView.findViewById(R.id.listName)
+        //val descriptionTextView: TextView = itemView.findViewById(R.id.textView6)
+        //val btnMoreInfo: Button = itemView.findViewById(R.id.btnMoreInfo)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -28,7 +28,7 @@ class EquiposAdapter(private val dataList: List<Equipo>, private val fragmentMan
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val currentItem = dataList[position]
         holder.titleTextView.text = currentItem.nombre
-        holder.descriptionTextView.text  = currentItem.descripcion
+        //holder.descriptionTextView.text  = currentItem.descripcion
         holder.itemView.setOnClickListener {
             onItemClickListener?.onItemClick(position)
             val dialogFragment = ysv_dialog_team_members()

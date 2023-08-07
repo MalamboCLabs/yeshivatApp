@@ -34,14 +34,14 @@ class YsvRegistrarEquipoNuevoFragment : Fragment() {
 
         var root: View = binding.root
         val nombreEquipo = binding.edtNombreEquipo.text
-        val foto = binding.edtLogo.text
-        val logo = binding.edtFoto.text
+        //val foto = binding.edtLogo.text
+        //val logo = binding.edtFoto.text
         val descrip = binding.edtDescrip.text
         binding.btnRegisterTeam.setOnClickListener {
             val registerE : RequestRegisterTeam = RequestRegisterTeam(
                 nombreEquipo.toString(),
-                logo.toString(),
-                foto.toString(),
+                "",
+                "",
                 descrip.toString(),
                 0
             )

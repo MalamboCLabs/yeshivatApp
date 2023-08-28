@@ -19,6 +19,7 @@ import com.vms.yeshivatapp.databinding.YsvDetalleequiposDialogfragmentBinding
 import com.vms.yeshivatapp.ui.fragments.users.equipo.dialog.ysv_dialog_team_members
 
 import com.vms.yeshivatapp.ui.fragments.users.equipo.viewmodel.YsvDetalleEquiposViewModel
+import com.vms.yeshivatapp.ui.utils.ysv_dialog_loading
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -43,6 +44,10 @@ class ysv_detalleequipos_fragment: Fragment(), EquiposAdapter.OnItemClickListene
         _binding = YsvDetalleequiposDialogfragmentBinding.inflate(inflater, container, false)
         var root: View = binding.root
         val dataList = mutableListOf<Equipo>()
+        val fragmentManager = childFragmentManager
+        val dialogFragment = ysv_dialog_loading()
+        dialogFragment.show(fragmentManager, "YsvDialogTeamMembers")
+
         recyclerView = binding.rVEquipos
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
@@ -55,13 +60,14 @@ class ysv_detalleequipos_fragment: Fragment(), EquiposAdapter.OnItemClickListene
                     if (user != null) {
                         val equipos = user.data
                         for(equipo in equipos ){
-                            val EquipoM = Equipo(equipo.id_equipo, equipo.nombre, "", "", equipo.descripcion)
+                            val EquipoM = Equipo(equipo.id_equipo, equipo.nombre, equipo.logo, equipo.foto, equipo.imagenLogo, equipo.imagenFoto, equipo.descripcion)
                             dataList.add(EquipoM)
                         }
                         requireActivity().runOnUiThread {
                             Log.e("Test_Equipo", user.data.toString())
                             val adapter = EquiposAdapter(dataList,childFragmentManager)
                             recyclerView.adapter = adapter
+                            dialogFragment.dismiss()
                         }
                     }
                 }
@@ -69,15 +75,6 @@ class ysv_detalleequipos_fragment: Fragment(), EquiposAdapter.OnItemClickListene
         }
 
 
-
-        /*val dataList = listOf(
-            EquipoModel(1, "Descripción del elemento 1", R.drawable.americalogo),
-            EquipoModel(2, "Descripción del elemento 2", R.drawable.americalogo),
-            EquipoModel(3, "Descripción del element
-            o 3", R.drawable.americalogo),
-            EquipoModel(4, "Descripción del elemento 4", R.drawable.americalogo),
-            EquipoModel(5, "Descripción del elemento 5", R.drawable.americalogo)
-        )*/
 
 
 

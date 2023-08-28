@@ -1,7 +1,7 @@
 package com.vms.yeshivatapp.data.model
 
 data class LoginResponse(
-    val data: Data,
+    val data: Any,
     val function: String,
     val date: Long,
     val status: String,

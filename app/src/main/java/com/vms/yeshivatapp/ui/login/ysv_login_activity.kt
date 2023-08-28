@@ -1,12 +1,16 @@
 package com.vms.yeshivatapp.ui.login
 
+import android.Manifest
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.WindowManager
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
 import com.vms.yeshivatapp.R
@@ -20,6 +24,11 @@ import com.vms.yeshivatapp.databinding.YsvLoginActivityBinding
 import com.vms.yeshivatapp.ui.fragments.users.ysv_main_user_fragment
 import kotlinx.coroutines.*
 import retrofit2.Response
+import android.provider.Settings
+import android.net.Uri
+import com.google.gson.Gson
+import com.google.gson.internal.LinkedTreeMap
+import com.vms.yeshivatapp.data.model.Data
 
 class ysv_login_activity : AppCompatActivity() {
     companion object{
@@ -27,6 +36,13 @@ class ysv_login_activity : AppCompatActivity() {
     }
     private lateinit var viewModel: YsvLoginViewModel
     private lateinit var binding: YsvLoginActivityBinding
+    private val REQUIRED_PERMISSIONS = arrayOf(
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.CAMERA
+    )
+    private val PERMISSION_REQUEST_CODE = 123
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
@@ -36,24 +52,92 @@ class ysv_login_activity : AppCompatActivity() {
         //pref = SharedPreferences(baseContext)
         supportActionBar?.hide()
         this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        /*validar permisos*/
+        if (!arePermissionsGranted()) {
+            showPermissionDialog()
+        } else {
+            // Los permisos están concedidos, continúa con la lógica de la actividad
+            binding.btnLogin.setOnClickListener {
+                /*val intent = Intent(this, ysv_main_user_fragment::class.java)
+                startActivity(intent)*/
+                val alias = binding.edtUser.text.toString()
+                val pass = binding.edtPassword.text.toString()
 
-        binding.btnLogin.setOnClickListener {
-            /*val intent = Intent(this, ysv_main_user_fragment::class.java)
-            startActivity(intent)*/
-            val alias = binding.edtUser.text.toString()
-            val pass = binding.edtPassword.text.toString()
-            Log.e("CREDENCIALES ALIAS", alias)
-            Log.e("CREDENCIALES USUARIO", pass)
-            val loginData: LoginRequest = LoginRequest(
-                alias,
-                pass,
-                "E",
-                "189.21.40.11",
-                "Android",
-                "Android"
-            )
-            gotoLogin(loginData)
+                if(alias.isEmpty() || pass.isEmpty()){
+                    val dialogBuilder = AlertDialog.Builder(this)
+                    dialogBuilder.setMessage("Necesitamos que llenes los campos para poder inicar sesion")
+                        .setPositiveButton("Continuar") { dialog, _ ->
+                            // Abre la pantalla de configuración de la aplicación para que el usuario active los permisos
+                            dialog.dismiss()
+                        }
+                        .setNegativeButton("Cancelar") { dialog, _ ->
+                            dialog.dismiss()
+                            finish() // Puedes finalizar la actividad si el usuario cancela
+                        }
+                        .setCancelable(false)
+                    val dialog = dialogBuilder.create()
+                    dialog.show()
+                }else{
+
+                    val loginData: LoginRequest = LoginRequest(
+                        alias,
+                        pass,
+                        "E",
+                        "189.21.40.11",
+                        "Android",
+                        "Android"
+                    )
+                    gotoLogin(loginData)
+                }
+            }
         }
+    }
+
+    private fun arePermissionsGranted(): Boolean {
+        for (permission in REQUIRED_PERMISSIONS) {
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    permission
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                return false
+            }
+        }
+        return true
+    }
+
+    private fun showPermissionDialog() {
+        val dialogBuilder = AlertDialog.Builder(this)
+        dialogBuilder.setMessage("Necesitamos ciertos permisos para continuar")
+            .setPositiveButton("Activar") { dialog, _ ->
+                // Abre la pantalla de configuración de la aplicación para que el usuario active los permisos
+                openAppSettings()
+                dialog.dismiss()
+            }
+            .setNegativeButton("Cancelar") { dialog, _ ->
+                dialog.dismiss()
+                finish() // Puedes finalizar la actividad si el usuario cancela
+            }
+            .setCancelable(false)
+        val dialog = dialogBuilder.create()
+        dialog.show()
+    }
+
+    private fun openAppSettings() {
+        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+        val uri = Uri.fromParts("package", packageName, null)
+        intent.data = uri
+        startActivity(intent)
+    }
+
+
+    private fun validateCredentials(alias: String, pass: String): Boolean {
+        Log.e("TARG", alias)
+        Log.e("TARG", pass)
+        if(alias.isNotEmpty() && pass.isNotEmpty()){
+            return true
+        }
+        return false
     }
 
     private fun gotoLogin(data: LoginRequest) {
@@ -63,17 +147,47 @@ class ysv_login_activity : AppCompatActivity() {
                 if(call.isSuccessful){
                     val user:LoginResponse? = call.body()
                     if (user != null){
-                        Log.e("DETALLES DE LA API", user.detail)
-                        user?.data?.let {
-                            val usuario = entity(
-                                it.id_usuario, it.nombre_usuario, it.correo, it.mensaje,
-                                it.id_perfil, it.nombre_perfil, "INGRESO", "LOGIN APP"
-                            )
-                            viewModel.deleteUsers()
-                            viewModel.insertUsser(usuario)
-                            Log.e("Usuario", it.nombre_usuario)
+                       // Log.e("DETALLES DE LA API", user.detail)
+                        if(user.status.equals("SUCCESS")){
+                            val data = user.data
+                            when (data) {
+                                is Data -> {
+                                    // Tratar los datos como un objeto Data
+                                    val usuario = entity(
+                                        data.id_usuario, data.nombre_usuario, data.correo, data.mensaje,
+                                        data.id_perfil, data.nombre_perfil, "INGRESO", "LOGIN APP"
+                                    )
+                                    viewModel.deleteUsers()
+                                    viewModel.insertUsser(usuario)
+                                    Log.e("Usuario", data.nombre_usuario)
+                                    gotoDash()
+                                }
+                                is LinkedTreeMap<*, *> -> {
+                                    val gson = Gson()
+                                    val userDataJson = gson.toJson(data)
+                                    val userData = gson.fromJson(userDataJson, Data::class.java)
+                                    // Tratar los datos como un objeto Data
+                                    val usuario = entity(
+                                        userData.id_usuario, userData.nombre_usuario, userData.correo, userData.mensaje,
+                                        userData.id_perfil, userData.nombre_perfil, "INGRESO", "LOGIN APP"
+                                    )
+                                    viewModel.deleteUsers()
+                                    viewModel.insertUsser(usuario)
+                                    Log.e("Usuario", userData.nombre_usuario)
+                                    gotoDash()
+                                }
+                                else -> {
+                                    // Tratar otros casos de tipos desconocidos
+                                }
+                            }
+
+
+                        }else{
+                            Log.e("ERROR", user.detail)
                         }
-                        gotoDash()
+
+                    }else{
+                        Log.e("ERROR LOGIN", "ERROR AL CONSUMIR AL SERVICIO")
                     }
 
                 }

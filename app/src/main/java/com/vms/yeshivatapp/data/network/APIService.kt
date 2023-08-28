@@ -18,6 +18,10 @@ interface APIService {
     suspend fun getTeams():Response<RespuestaEquipos>
 
     @Headers("Content-Type: application/json")
+    @POST("jugadores/getPlayersPerTeam")
+    suspend fun getInfoPlayers(@Body playerResuest: PlayerRequest): Response<JsonResponse>
+
+    @Headers("Content-Type: application/json")
     @GET("equipos/getAllStatics")
     suspend fun getResultados():Response<EstadisticaEquipo>
 
@@ -28,4 +32,6 @@ interface APIService {
     @Headers("Content-Type: application/json")
     @POST("equipos/createTeam")
     suspend fun RegisterTeamS(@Body loginreques: RequestRegisterTeam): Response<ResponseRegisterTeam>
+
+
 }

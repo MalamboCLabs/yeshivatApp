@@ -10,6 +10,8 @@ data class Equipo(
     val nombre: String,
     val logo: String?,
     val foto: String?,
+    val imagenLogo: String?,
+    val imagenFoto: String?,
     val descripcion: String
 )
 

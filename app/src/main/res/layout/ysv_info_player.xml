@@ -19,7 +19,9 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            tools:layout_editor_absoluteX="-190dp"
+            tools:layout_editor_absoluteY="199dp">
 
             <ImageView
                 android:id="@+id/photoPlayer"
@@ -39,6 +41,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:textColor="@color/color_ysv_two"
+                android:textStyle="bold"
                 android:text="Apodo:"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -65,92 +69,98 @@
                 android:id="@+id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/color_ysv_two"
+                android:textStyle="bold"
                 android:text="Edad"
-                app:layout_constraintEnd_toStartOf="@+id/top_guidelineD"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/top_guideline" />
+                app:layout_constraintTop_toBottomOf="@+id/tvApodo" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/top_guidelineD"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_begin="57dp" />
+                app:layout_constraintGuide_end="308dp" />
 
             <TextView
                 android:id="@+id/tvNumero"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:text="10"
-                app:layout_constraintStart_toEndOf="@+id/textView4"
-                app:layout_constraintTop_toTopOf="@+id/top_guideline" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/top_guidelineT"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_begin="57dp"
+                app:layout_constraintGuide_begin="103dp"
                 app:layout_constraintGuide_percent="0.25" />
 
             <TextView
                 android:id="@+id/textView9"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
+                android:textColor="@color/color_ysv_two"
+                android:textStyle="bold"
                 android:text="Goles ultima temporada"
-                app:layout_constraintStart_toStartOf="@+id/top_guidelineT"
-                app:layout_constraintTop_toTopOf="@+id/top_guideline" />
+                app:layout_constraintEnd_toStartOf="@+id/top_guidelineSS"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/top_guidelineS" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/top_guidelineC"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_begin="57dp"
-                app:layout_constraintGuide_percent="0.70" />
+                app:layout_constraintGuide_end="131dp"
+                app:layout_constraintGuide_percent="0.80" />
 
             <TextView
                 android:id="@+id/tvGolesTemp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:text="35"
-                app:layout_constraintStart_toStartOf="@+id/top_guidelineC"
-                app:layout_constraintTop_toTopOf="@+id/top_guideline" />
+                app:layout_constraintStart_toEndOf="@+id/textView9"
+                app:layout_constraintTop_toTopOf="@+id/top_guidelineS" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/top_guidelineS"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.6" />
+                app:layout_constraintGuide_percent="0.80" />
 
             <TextView
                 android:id="@+id/textView13"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:text="Posicion"
-                app:layout_constraintEnd_toStartOf="@+id/top_guidelineD"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/top_guidelineS" />
+                app:layout_constraintTop_toBottomOf="@+id/tvNumero" />
 
             <TextView
                 android:id="@+id/tvPs"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:text="Delantero"
-                app:layout_constraintStart_toStartOf="@+id/top_guidelineD"
-                app:layout_constraintTop_toTopOf="@+id/top_guidelineS" />
+                android:textColor="@color/color_ysv_two"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/top_guidelineSS"
@@ -158,7 +168,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintGuide_begin="57dp"
-                app:layout_constraintGuide_percent="0.35" />
+                app:layout_constraintGuide_percent="0.70" />
 
             <TextView
                 android:id="@+id/textView17"
@@ -167,8 +177,11 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:text="Goles totales de liga"
-                app:layout_constraintStart_toStartOf="@+id/top_guidelineSS"
-                app:layout_constraintTop_toTopOf="@+id/top_guidelineS" />
+                android:textColor="@color/color_ysv_two"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/top_guidelineSS"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
             <TextView
                 android:id="@+id/tvGoleLig"
@@ -177,8 +190,8 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:text="110"
-                app:layout_constraintStart_toStartOf="@+id/top_guidelineC"
-                app:layout_constraintTop_toTopOf="@+id/top_guidelineS" />
+                app:layout_constraintStart_toEndOf="@+id/textView17"
+                app:layout_constraintTop_toBottomOf="@+id/tvGolesTemp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

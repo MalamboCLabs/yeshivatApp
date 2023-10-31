@@ -26,6 +26,7 @@ import kotlinx.coroutines.*
 import retrofit2.Response
 import android.provider.Settings
 import android.net.Uri
+import android.widget.TextView
 import com.google.gson.Gson
 import com.google.gson.internal.LinkedTreeMap
 import com.vms.yeshivatapp.data.model.Data
@@ -36,6 +37,7 @@ class ysv_login_activity : AppCompatActivity() {
     }
     private lateinit var viewModel: YsvLoginViewModel
     private lateinit var binding: YsvLoginActivityBinding
+    private lateinit var db: YSVBaseDeDatos
     private val REQUIRED_PERMISSIONS = arrayOf(
         Manifest.permission.ACCESS_FINE_LOCATION,
         Manifest.permission.CAMERA
@@ -48,10 +50,12 @@ class ysv_login_activity : AppCompatActivity() {
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         binding = YsvLoginActivityBinding.inflate(layoutInflater)
         viewModel = ViewModelProvider(this).get(YsvLoginViewModel::class.java)
+        db = Room.databaseBuilder(applicationContext, YSVBaseDeDatos::class.java, "ysvDataBase").build()
         setContentView(binding.root)
         //pref = SharedPreferences(baseContext)
         supportActionBar?.hide()
         this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        validateLoginApp()
         /*validar permisos*/
         if (!arePermissionsGranted()) {
             showPermissionDialog()
@@ -91,6 +95,24 @@ class ysv_login_activity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun validateLoginApp() {
+        CoroutineScope(Dispatchers.IO).launch {
+            var userDAO = db.entityDao()
+            if(userDAO.obtenerTodos().isNotEmpty()){
+                val listaEntidades = userDAO.obtenerTodos()
+                val entidad = listaEntidades[0]
+                if(!entidad.nombre_usuario.equals("")){
+                    gotoDash()
+                }
+            }
+        }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finishAffinity()
     }
 
     private fun arePermissionsGranted(): Boolean {
@@ -198,6 +220,7 @@ class ysv_login_activity : AppCompatActivity() {
     private fun gotoDash() {
         var intent = Intent(this, ysv_main_user_fragment::class.java)
         startActivity(intent)
+        finish()
     }
 
 }

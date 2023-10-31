@@ -1,8 +1,12 @@
 package com.vms.yeshivatapp.ui.fragments.users.equipo.nuevoEquipo
 
+import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -17,10 +21,14 @@ import com.vms.yeshivatapp.data.model.RequestRegisterTeam
 import com.vms.yeshivatapp.data.model.ResponseRegisterTeam
 import com.vms.yeshivatapp.data.network.APIService
 import com.vms.yeshivatapp.databinding.YsvEquiposAltaFragmentBinding
+import com.vms.yeshivatapp.ui.utils.YsvGenericDialog
+import com.vms.yeshivatapp.ui.utils.YsvPhothoPreiewDialog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Response
+import java.io.ByteArrayOutputStream
+import java.io.InputStream
 
 class YsvRegistrarEquipoNuevoFragment : Fragment() {
     private lateinit var nuevoEquipoViewModel : YsvRegistrarEquipoNuevoViewModel
@@ -29,6 +37,12 @@ class YsvRegistrarEquipoNuevoFragment : Fragment() {
 
     private val PICK_IMAGE_REQUEST = 1
     private val CAPTURE_IMAGE_REQUEST = 2
+    private var FLAG_TIPE_IMAGE = 0;
+
+    private var imgLogoBs: String = ""
+    private var imgEquipo: String = ""
+    private var nombreEquipo: String = ""
+    private var buttonEnable = true
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -39,24 +53,43 @@ class YsvRegistrarEquipoNuevoFragment : Fragment() {
         _binding =YsvEquiposAltaFragmentBinding.inflate(inflater, container, false)
 
         var root: View = binding.root
-        val nombreEquipo = binding.edtNombreEquipo.text
+        nombreEquipo = binding.edtNombreEquipo.text.toString()
         //val foto = binding.edtLogo.text
         //val logo = binding.edtFoto.text
         val descrip = binding.edtDescrip.text
+
         binding.button.setOnClickListener {
-            showImagePickerDialog()
+            showImagePickerDialog(1)
+        }
+        binding.button2.setOnClickListener {
+            FLAG_TIPE_IMAGE = 1
+            showImagePickerDialog(2)
         }
         binding.btnRegisterTeam.setOnClickListener {
-            val registerE : RequestRegisterTeam = RequestRegisterTeam(
-                nombreEquipo.toString(),
-                "",
-                "",
-                descrip.toString(),
-                0
-            )
-            registerEquipo(registerE)
+            if(validateInputs()){
+                imgLogoBs = "/var/www/yeshivat/assets/img/"+ nombreEquipo + "_logo.jpg"
+                imgEquipo = "/var/www/yeshivat/assets/img/"+ nombreEquipo + "_foto.jpg"
+                val registerE : RequestRegisterTeam = RequestRegisterTeam(
+                    nombreEquipo.toString(),
+                    imgLogoBs,
+                    imgEquipo,
+                    descrip.toString(),
+                    0
+                )
+                registerEquipo(registerE)
+            }else{
+                val genericDialog = YsvGenericDialog("FALTAN DATOS", "Por favor llena todos los datos Nombre del equipo, foto, logo, descripcion del equipo.", true, false)
+                genericDialog.show(parentFragmentManager, "ysv")
+            }
         }
         return root
+    }
+
+    private fun validateInputs(): Boolean {
+        if(binding.edtDescrip.text.isNotEmpty() && binding.edtNombreEquipo.text.isNotEmpty() && imgEquipo.isNotEmpty() && imgLogoBs.isNotEmpty()){
+            return true;
+        }
+        return false
     }
 
     fun registerEquipo(registerE: RequestRegisterTeam) {
@@ -94,26 +127,118 @@ class YsvRegistrarEquipoNuevoFragment : Fragment() {
     }
 
 
-    private fun showImagePickerDialog() {
+    private fun showImagePickerDialog(reqC: Int) {
         val items = arrayOf("Elegir de la galería", "Tomar una foto")
-        AlertDialog.Builder(requireContext())
-            .setTitle("Selecciona una imagen")
-            .setItems(items) { _, which ->
-                when (which) {
-                    0 -> pickImageFromGallery()
-                    1 -> captureImageFromCamera()
+        requireActivity().runOnUiThread{
+            AlertDialog.Builder(requireContext())
+                .setTitle("Selecciona una imagen")
+                .setItems(items) { _, which ->
+                    when (which) {
+                        0 -> pickImageFromGallery(reqC)
+                        1 -> captureImageFromCamera(reqC)
+                    }
                 }
-            }
-            .show()
+                .show()
+        }
     }
 
-    private fun pickImageFromGallery() {
+    private fun pickImageFromGallery(req: Int) {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         startActivityForResult(intent, PICK_IMAGE_REQUEST)
     }
 
-    private fun captureImageFromCamera() {
+    private fun captureImageFromCamera(req: Int) {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         startActivityForResult(intent, CAPTURE_IMAGE_REQUEST)
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode == Activity.RESULT_OK){
+            when(requestCode){
+                PICK_IMAGE_REQUEST -> {
+                    val selectImageUri = data?.data
+                    val imageBitmap = selectImageUri?.let{
+                        requireContext().contentResolver.openInputStream(it)?.use {
+                            BitmapFactory.decodeStream(it)
+                        }
+                    }
+
+                    if(imageBitmap != null){
+                        if(FLAG_TIPE_IMAGE == 1){
+
+                            imgEquipo = convertBitmapToBase64(imageBitmap)
+                            val alertPreview = YsvPhothoPreiewDialog(imgEquipo,1, nombreEquipo);
+                            alertPreview.setButtonStateListener { isButtonPressed, isImage ->
+                                run {
+                                    if (isButtonPressed) {
+                                        showImagePickerDialog(isImage)
+                                    }else{
+                                        buttonEnable = false
+                                    }
+                                }
+                            }
+                            alertPreview.show(parentFragmentManager, "ysvPreviewPhotho")
+                        }else{
+                            imgLogoBs = convertBitmapToBase64(imageBitmap)
+                            val alertPreview = YsvPhothoPreiewDialog(imgLogoBs,1, nombreEquipo);
+                            alertPreview.show(parentFragmentManager, "ysvPreviewPhotho")
+                            alertPreview.setButtonStateListener { isButtonPressed, isImage ->
+                                run {
+                                    if (isButtonPressed) {
+                                        showImagePickerDialog(isImage)
+                                    }else{
+                                        buttonEnable = false
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+                    //imgLogoBs = convertBitmapToBase64(selectImageUri)
+                }
+                CAPTURE_IMAGE_REQUEST ->{
+                    val imageBitmap = data?.extras?.get("data") as? Bitmap
+                    if(FLAG_TIPE_IMAGE == 1){
+                        imgEquipo = imageBitmap?.let { convertBitmapToBase64(it) }.toString()
+                        val alertPreview = YsvPhothoPreiewDialog(imgEquipo,2, nombreEquipo);
+                        alertPreview.setButtonStateListener { isButtonPressed, isImage ->
+                            run {
+                                if (isButtonPressed) {
+                                    showImagePickerDialog(isImage)
+                                }else{
+                                    buttonEnable = false
+                                }
+                            }
+                        }
+                        alertPreview.show(parentFragmentManager, "ysvPreviewPhotho")
+
+                    }else{
+                        imgLogoBs = imageBitmap?.let { convertBitmapToBase64(it) }.toString()
+                        val alertPreview = YsvPhothoPreiewDialog(imgLogoBs,2, nombreEquipo);
+                        alertPreview.setButtonStateListener { isButtonPressed, isImage ->
+                            run {
+                                if (isButtonPressed) {
+                                    showImagePickerDialog(isImage)
+                                }else{
+                                    buttonEnable = false
+                                }
+                            }
+                        }
+                        alertPreview.show(parentFragmentManager, "ysvPreviewPhotho")
+                    }
+
+                }
+            }
+        }
+    }
+
+    private fun convertBitmapToBase64(bitmap: Bitmap): String {
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
+        val byteArray = byteArrayOutputStream.toByteArray()
+        return Base64.encodeToString(byteArray, Base64.DEFAULT)
+    }
+
+
 }

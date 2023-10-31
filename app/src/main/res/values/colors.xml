@@ -15,4 +15,16 @@
     <color name="noneSpaceRW">#F6F7F9</color>
     <color name="purpleToolBarRW">#8200FF</color>
     <color name="transparent">#00000000</color>
+    <color name="greenDarkRW">#5DC137</color>
+    <color name="dissableButtonRW">#E1E5EF</color> <!-- Letra de los botones deshabilitados -->
+
+    <color name="whiteNavBarBackground">#FFFFFF</color> <!-- Color blanco, color de la navigation bar -->
+    <color name="grayRW">#99747F92</color> <!--  -->
+    <color name="grayRW2">#747F92</color> <!--  -->
+    <color name="grayDarkRW">#75787B</color> <!-- Gris -->
+    <color name="yellowTicket">#FFF8CC</color> <!-- Amarillo de cajas de alerta -->
+    <color name="cardIconPaymentMethod">#64D2A3</color> <!-- Color icono pago con tarjeta -->
+    <color name="cashIconPaymentMethod">#3B87BA</color> <!-- Pago con efectivo -->
+    <color name="qrIconPaymentMethod">#DBA037</color> <!-- Pago con QR -->
+    <color name="greenHightDarkRW">#2EA400</color>
 </resources>

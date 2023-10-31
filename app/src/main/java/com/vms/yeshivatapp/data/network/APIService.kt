@@ -32,6 +32,9 @@ interface APIService {
     @Headers("Content-Type: application/json")
     @POST("equipos/createTeam")
     suspend fun RegisterTeamS(@Body loginreques: RequestRegisterTeam): Response<ResponseRegisterTeam>
+     @Headers("Content-Type: application/json")
+     @POST("registro/uploadBase64")
+     suspend fun RegisterImage(@Body uploadImage: UploadImageRequest): Response<ResponseUploadImage>
 
 
 }

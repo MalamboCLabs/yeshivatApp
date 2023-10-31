@@ -23,6 +23,7 @@ class ResultadosEquipoAdapter(private val dataList: List<EquipoR>, private val f
         val perdidos: TextView = itemView.findViewById(R.id.tvPartidos)
         val goles: TextView = itemView.findViewById(R.id.tvGoles)
         val contra: TextView = itemView.findViewById(R.id.tvContra)
+        val button: TextView = itemView.findViewById(R.id.button3)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {

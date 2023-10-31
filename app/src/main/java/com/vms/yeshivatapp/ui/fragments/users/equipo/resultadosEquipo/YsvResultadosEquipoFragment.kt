@@ -41,6 +41,7 @@ class YsvResultadosEquipoFragment: Fragment() {
         recyclerView = binding.rvResultadosTm
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         getResults()
+
         return root
     }
 

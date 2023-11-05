@@ -64,7 +64,7 @@ class YsvPhothoPreiewDialog(bitPhto: String, typeImage: Int, nombreEquipo: Strin
         var base64Image = photoP
         var btnNombreImgen = ""
         base64Image = base64Image.replace("\n".toRegex(), "")
-        if (type.equals("1")){
+        if (type.equals(1)){
             btnNombreImgen = nEquips + "_logo.jpg"
         }else{
             btnNombreImgen = nEquips + "_foto.jpg"

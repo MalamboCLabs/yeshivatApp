@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.vms.yeshivatapp.core.RetrofitHelper
@@ -21,6 +22,7 @@ import com.vms.yeshivatapp.data.model.RequestRegisterTeam
 import com.vms.yeshivatapp.data.model.ResponseRegisterTeam
 import com.vms.yeshivatapp.data.network.APIService
 import com.vms.yeshivatapp.databinding.YsvEquiposAltaFragmentBinding
+import com.vms.yeshivatapp.ui.utils.YsvEstatusDialogGneric
 import com.vms.yeshivatapp.ui.utils.YsvGenericDialog
 import com.vms.yeshivatapp.ui.utils.YsvPhothoPreiewDialog
 import kotlinx.coroutines.CoroutineScope
@@ -41,8 +43,8 @@ class YsvRegistrarEquipoNuevoFragment : Fragment() {
 
     private var imgLogoBs: String = ""
     private var imgEquipo: String = ""
-    private var nombreEquipo: String = ""
     private var buttonEnable = true
+    var nomEquip: String =""
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -53,22 +55,36 @@ class YsvRegistrarEquipoNuevoFragment : Fragment() {
         _binding =YsvEquiposAltaFragmentBinding.inflate(inflater, container, false)
 
         var root: View = binding.root
-        nombreEquipo = binding.edtNombreEquipo.text.toString()
+        val  nombreEquipo = binding.edtNombreEquipo.text
+        binding.button.isEnabled = false
+        binding.button2.isEnabled = false
+        binding.edtNombreEquipo.doAfterTextChanged {
+            if(nombreEquipo.toString() != ""){
+                binding.button.isEnabled = true
+                binding.button2.isEnabled = true
+            }
+        }
+
+
         //val foto = binding.edtLogo.text
         //val logo = binding.edtFoto.text
         val descrip = binding.edtDescrip.text
 
         binding.button.setOnClickListener {
+            FLAG_TIPE_IMAGE = 1
+            nomEquip = nombreEquipo.toString()
             showImagePickerDialog(1)
         }
         binding.button2.setOnClickListener {
-            FLAG_TIPE_IMAGE = 1
+
+            nomEquip = nombreEquipo.toString()
+            FLAG_TIPE_IMAGE = 2
             showImagePickerDialog(2)
         }
         binding.btnRegisterTeam.setOnClickListener {
             if(validateInputs()){
-                imgLogoBs = "/var/www/yeshivat/assets/img/"+ nombreEquipo + "_logo.jpg"
-                imgEquipo = "/var/www/yeshivat/assets/img/"+ nombreEquipo + "_foto.jpg"
+                imgLogoBs = "/assets/img/"+ nombreEquipo + "_logo.jpg"
+                imgEquipo = "/assets/img/"+ nombreEquipo + "_foto.jpg"
                 val registerE : RequestRegisterTeam = RequestRegisterTeam(
                     nombreEquipo.toString(),
                     imgLogoBs,
@@ -103,7 +119,8 @@ class YsvRegistrarEquipoNuevoFragment : Fragment() {
                 if (user != null) {
                     if (user.status.equals("SUCCESS")) {
                         this.run {
-                            Toast.makeText(requireContext(), "Equipo Registrado", Toast.LENGTH_SHORT).show()
+                            val dialogInfo = YsvEstatusDialogGneric("EQUIPO REGISTRADO", "El quipo fue registrado con éxito.", false, true, 1)
+                            dialogInfo.show(parentFragmentManager, "ysv")
                         }
                         //Toast.makeText(requireContext(), "Equipo Registrado", Toast.LENGTH_SHORT).show()
                         Log.e("REGISTRO DE EQUIPO", user.status)
@@ -168,7 +185,7 @@ class YsvRegistrarEquipoNuevoFragment : Fragment() {
                         if(FLAG_TIPE_IMAGE == 1){
 
                             imgEquipo = convertBitmapToBase64(imageBitmap)
-                            val alertPreview = YsvPhothoPreiewDialog(imgEquipo,1, nombreEquipo);
+                            val alertPreview = YsvPhothoPreiewDialog(imgEquipo,FLAG_TIPE_IMAGE, nomEquip);
                             alertPreview.setButtonStateListener { isButtonPressed, isImage ->
                                 run {
                                     if (isButtonPressed) {
@@ -179,9 +196,10 @@ class YsvRegistrarEquipoNuevoFragment : Fragment() {
                                 }
                             }
                             alertPreview.show(parentFragmentManager, "ysvPreviewPhotho")
-                        }else{
+                        }
+                        else{
                             imgLogoBs = convertBitmapToBase64(imageBitmap)
-                            val alertPreview = YsvPhothoPreiewDialog(imgLogoBs,1, nombreEquipo);
+                            val alertPreview = YsvPhothoPreiewDialog(imgLogoBs,FLAG_TIPE_IMAGE, nomEquip);
                             alertPreview.show(parentFragmentManager, "ysvPreviewPhotho")
                             alertPreview.setButtonStateListener { isButtonPressed, isImage ->
                                 run {
@@ -201,7 +219,7 @@ class YsvRegistrarEquipoNuevoFragment : Fragment() {
                     val imageBitmap = data?.extras?.get("data") as? Bitmap
                     if(FLAG_TIPE_IMAGE == 1){
                         imgEquipo = imageBitmap?.let { convertBitmapToBase64(it) }.toString()
-                        val alertPreview = YsvPhothoPreiewDialog(imgEquipo,2, nombreEquipo);
+                        val alertPreview = YsvPhothoPreiewDialog(imgEquipo,FLAG_TIPE_IMAGE, nomEquip);
                         alertPreview.setButtonStateListener { isButtonPressed, isImage ->
                             run {
                                 if (isButtonPressed) {
@@ -215,7 +233,7 @@ class YsvRegistrarEquipoNuevoFragment : Fragment() {
 
                     }else{
                         imgLogoBs = imageBitmap?.let { convertBitmapToBase64(it) }.toString()
-                        val alertPreview = YsvPhothoPreiewDialog(imgLogoBs,2, nombreEquipo);
+                        val alertPreview = YsvPhothoPreiewDialog(imgLogoBs,FLAG_TIPE_IMAGE, nomEquip);
                         alertPreview.setButtonStateListener { isButtonPressed, isImage ->
                             run {
                                 if (isButtonPressed) {

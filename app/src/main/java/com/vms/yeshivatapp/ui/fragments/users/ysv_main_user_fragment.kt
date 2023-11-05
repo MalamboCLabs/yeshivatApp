@@ -19,6 +19,7 @@ import com.vms.yeshivatapp.databinding.YsvMenuHeaderBinding
 import com.vms.yeshivatapp.ui.fragments.users.equipo.ysv_equipo_fragment
 import com.vms.yeshivatapp.ui.fragments.users.live.ysv_envivo_fragment
 import com.vms.yeshivatapp.ui.fragments.users.partidos.ysv_partidos_fragment
+import com.vms.yeshivatapp.ui.fragments.utilsTest.TestDialogsUtils
 import kotlinx.coroutines.*
 
 class ysv_main_user_fragment: AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -87,9 +88,15 @@ class ysv_main_user_fragment: AppCompatActivity(), NavigationView.OnNavigationIt
                 .replace(R.id.fragment_container, ysv_equipo_fragment()).commit()
             R.id.ysvPartidos -> supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, ysv_partidos_fragment()).commit()
+            R.id.ysvTestUtils  -> supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, TestDialogsUtils()).commit()
         }
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
     }
 
 }

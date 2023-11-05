@@ -24,5 +24,9 @@
             android:icon="@drawable/ysv_admin_icon"
             android:title="Administrador"
             />
+        <item android:id="@+id/ysvTestUtils"
+            android:icon="@drawable/ysv_admin_icon"
+            android:title="TEST UTILS"
+            />
     </group>
 </menu>

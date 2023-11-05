@@ -5,6 +5,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.OnBackPressedDispatcher
+import androidx.activity.OnBackPressedDispatcherOwner
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.vms.yeshivatapp.R
@@ -13,7 +16,7 @@ import com.vms.yeshivatapp.ui.fragments.users.equipo.nuevoEquipo.YsvRegistrarEqu
 import com.vms.yeshivatapp.ui.fragments.users.equipo.resultadosEquipo.YsvResultadosEquipoFragment
 import com.vms.yeshivatapp.ui.fragments.users.equipo.viewmodel.YsvEquipoViewModel
 
-class ysv_equipo_fragment : Fragment() {
+class ysv_equipo_fragment : Fragment(),  OnBackPressedDispatcherOwner {
     private lateinit var equipoFragmentViewModel: YsvEquipoViewModel
     private var _binding: YsvEquipoFragmentBinding? = null
 
@@ -53,12 +56,21 @@ class ysv_equipo_fragment : Fragment() {
                 .commit()
 
         }
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                // No hacer nada al presionar el botón de retroceso (bloquear funcionalidad)
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
         return root
     }
 
     private fun initRecyclerView() {
 
     }
+
+    override val onBackPressedDispatcher: OnBackPressedDispatcher
+        get() = TODO("Not yet implemented")
 
     override fun onStart() {
 

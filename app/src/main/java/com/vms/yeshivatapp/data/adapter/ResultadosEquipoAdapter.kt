@@ -13,6 +13,8 @@ import com.vms.yeshivatapp.data.model.Equipo
 import com.vms.yeshivatapp.data.model.EquipoR
 import com.vms.yeshivatapp.data.model.EstadisticaEquipo
 import com.vms.yeshivatapp.ui.fragments.users.equipo.dialog.ysv_dialog_team_members
+import com.vms.yeshivatapp.ui.utils.YsvGenericDialog
+import com.vms.yeshivatapp.ui.utils.YsvResultsDialog
 
 class ResultadosEquipoAdapter(private val dataList: List<EquipoR>, private val fragmentManager: FragmentManager) :  RecyclerView.Adapter<ResultadosEquipoAdapter.MyViewHolder>(){
 
@@ -23,7 +25,7 @@ class ResultadosEquipoAdapter(private val dataList: List<EquipoR>, private val f
         val perdidos: TextView = itemView.findViewById(R.id.tvPartidos)
         val goles: TextView = itemView.findViewById(R.id.tvGoles)
         val contra: TextView = itemView.findViewById(R.id.tvContra)
-        val button: TextView = itemView.findViewById(R.id.button3)
+        val button: Button = itemView.findViewById(R.id.button3)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -39,6 +41,10 @@ class ResultadosEquipoAdapter(private val dataList: List<EquipoR>, private val f
         holder.perdidos.text = currentItem.num_perdidos.toString()
         holder.goles.text = currentItem.num_goles.toString()
         holder.contra.text = currentItem.en_contra.toString()
+        holder.button.setOnClickListener {
+            val genericDialog = YsvResultsDialog(currentItem.num_juegos.toString(), currentItem.num_goles.toString(), currentItem.num_ganados.toString(), currentItem.num_perdidos.toString(), currentItem.en_contra.toString())
+            genericDialog.show(fragmentManager, "ysvbv")
+        }
     }
 
 

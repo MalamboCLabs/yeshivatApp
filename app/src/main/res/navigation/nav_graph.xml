@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph.xml"
+    app:startDestination="@id/ysv_envivo_fragment">
+
+    <fragment
+        android:id="@+id/ysv_envivo_fragment"
+        android:name="com.vms.yeshivatapp.ui.fragments.users.live.ysv_envivo_fragment"
+        android:label="ysv_envivo_fragment"
+        tools:layout="@layout/ysv_envivo_fragment"/>
+    <activity
+        android:id="@+id/ysv_main_user_fragment2"
+        android:name="com.vms.yeshivatapp.ui.fragments.users.ysv_main_user_fragment"
+        android:label="ysv_activity_main_user"
+        tools:layout="@layout/ysv_activity_main_user" />
+    <fragment
+        android:id="@+id/ysv_equipo_fragment"
+        android:name="com.vms.yeshivatapp.ui.fragments.users.equipo.ysv_equipo_fragment"
+        android:label="ysv_equipo_fragment"
+        tools:layout="@layout/ysv_equipo_fragment">
+        <action
+            android:id="@+id/action_ysv_equipo_fragment_to_ysv_envivo_fragment"
+            app:destination="@id/ysv_envivo_fragment" />
+        <action
+            android:id="@+id/action_ysv_equipo_fragment_to_ysvRegistrarEquipoNuevoFragment"
+            app:destination="@id/ysvRegistrarEquipoNuevoFragment" />
+        <action
+            android:id="@+id/action_ysv_equipo_fragment_to_ysvResultadosEquipoFragment"
+            app:destination="@id/ysvResultadosEquipoFragment" />
+        <action
+            android:id="@+id/action_ysv_equipo_fragment_to_ysv_detalleequipos_fragment"
+            app:destination="@id/ysv_detalleequipos_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/ysvRegistrarEquipoNuevoFragment"
+        android:name="com.vms.yeshivatapp.ui.fragments.users.equipo.nuevoEquipo.YsvRegistrarEquipoNuevoFragment"
+        android:label="YsvRegistrarEquipoNuevoFragment"
+        tools:layout="@layout/ysv_equipos_alta_fragment"/>
+    <fragment
+        android:id="@+id/ysvResultadosEquipoFragment"
+        android:name="com.vms.yeshivatapp.ui.fragments.users.equipo.resultadosEquipo.YsvResultadosEquipoFragment"
+        android:label="YsvResultadosEquipoFragment"
+        tools:layout="@layout/ysv_resultados_equipos"/>
+    <fragment
+        android:id="@+id/ysv_detalleequipos_fragment"
+        android:name="com.vms.yeshivatapp.ui.fragments.users.equipo.ysv_detalleequipos_fragment"
+        android:label="ysv_detalleequipos_fragment"
+        tools:layout="@layout/ysv_detalleequipos_dialogfragment"/>
+    />
+</navigation>

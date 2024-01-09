@@ -56,12 +56,13 @@ class YsvRegistrarEquipoNuevoFragment : Fragment() {
 
         var root: View = binding.root
         val  nombreEquipo = binding.edtNombreEquipo.text
-        binding.button.isEnabled = false
-        binding.button2.isEnabled = false
+        binding.btnUpTeam.isEnabled = false
+
+        binding.btnPhotoTeam.isEnabled = false
         binding.edtNombreEquipo.doAfterTextChanged {
             if(nombreEquipo.toString() != ""){
-                binding.button.isEnabled = true
-                binding.button2.isEnabled = true
+                binding.btnUpTeam.isEnabled = true
+                binding.btnPhotoTeam.isEnabled = true
             }
         }
 
@@ -70,12 +71,12 @@ class YsvRegistrarEquipoNuevoFragment : Fragment() {
         //val logo = binding.edtFoto.text
         val descrip = binding.edtDescrip.text
 
-        binding.button.setOnClickListener {
-            FLAG_TIPE_IMAGE = 1
+        binding.btnUpTeam.setOnClickListener {
+            FLAG_TIPE_IMAGE = 1 /* La bandera significa que es la foto del logo*/
             nomEquip = nombreEquipo.toString()
             showImagePickerDialog(1)
         }
-        binding.button2.setOnClickListener {
+        binding.btnPhotoTeam.setOnClickListener {
 
             nomEquip = nombreEquipo.toString()
             FLAG_TIPE_IMAGE = 2
@@ -191,7 +192,7 @@ class YsvRegistrarEquipoNuevoFragment : Fragment() {
                                     if (isButtonPressed) {
                                         showImagePickerDialog(isImage)
                                     }else{
-                                        buttonEnable = false
+                                        binding.btnUpTeam.isEnabled = false
                                     }
                                 }
                             }

@@ -27,6 +27,7 @@ import retrofit2.Response
 import android.provider.Settings
 import android.net.Uri
 import android.widget.TextView
+import androidx.core.app.ActivityCompat
 import com.google.gson.Gson
 import com.google.gson.internal.LinkedTreeMap
 import com.vms.yeshivatapp.data.model.Data
@@ -35,6 +36,8 @@ class ysv_login_activity : AppCompatActivity() {
     companion object{
         lateinit var pref: SharedPreferences
     }
+    private val LOCATION_REQUEST_CODE = 123
+    private val REQUEST_CODE_APP_SETTINGS = 123
     private lateinit var viewModel: YsvLoginViewModel
     private lateinit var binding: YsvLoginActivityBinding
     private lateinit var db: YSVBaseDeDatos
@@ -52,18 +55,34 @@ class ysv_login_activity : AppCompatActivity() {
         viewModel = ViewModelProvider(this).get(YsvLoginViewModel::class.java)
         db = Room.databaseBuilder(applicationContext, YSVBaseDeDatos::class.java, "ysvDataBase").build()
         setContentView(binding.root)
-        //pref = SharedPreferences(baseContext)
         supportActionBar?.hide()
         this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         validateLoginApp()
-        /*validar permisos*/
         if (!arePermissionsGranted()) {
-            showPermissionDialog()
-        } else {
-            // Los permisos están concedidos, continúa con la lógica de la actividad
-            binding.btnLogin.setOnClickListener {
-                /*val intent = Intent(this, ysv_main_user_fragment::class.java)
-                startActivity(intent)*/
+            showPermissionDialog("¡Necesitamos permisos para continuar!", "¿Activar?")
+        }
+        binding.btnLogin.setOnClickListener {
+            if (!arePermissionsGranted()) {
+
+                val shouldShowCameraRationale = ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)
+                val shouldShowStorageRationale = ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                val shouldShowLocationRationale = ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)
+
+                if (!shouldShowCameraRationale || !shouldShowStorageRationale || !shouldShowLocationRationale) {
+                    AlertDialog.Builder(this)
+                        .setMessage("Para mejorar la experiencia de la aplicación necesitamos que actives todos los permisos. :)")
+                        .setPositiveButton("Configuración") { dialog, _ ->
+                            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                            val uri = Uri.fromParts("package", packageName, null)
+                            intent.data = uri
+                            startActivity(intent)
+                        }
+                        .setNegativeButton("Cancelar", { dialog, _ -> dialog.dismiss() })
+                        .show()
+                }
+
+                showPermissionDialog("¡Necesitamos permisos para continuar!", "¿Activar?")
+            }else{
                 val alias = binding.edtUser.text.toString()
                 val pass = binding.edtPassword.text.toString()
 
@@ -94,6 +113,7 @@ class ysv_login_activity : AppCompatActivity() {
                     gotoLogin(loginData)
                 }
             }
+
         }
     }
 
@@ -115,42 +135,32 @@ class ysv_login_activity : AppCompatActivity() {
         finishAffinity()
     }
 
-    private fun arePermissionsGranted(): Boolean {
-        for (permission in REQUIRED_PERMISSIONS) {
-            if (ContextCompat.checkSelfPermission(
-                    this,
-                    permission
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                return false
+    private fun showPermissionDialog(msj: String, accion: String) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
+            ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
+            ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION),
+                REQUEST_CODE_APP_SETTINGS)
+        } else {
+
+        }
+    }
+
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            REQUEST_CODE_APP_SETTINGS -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+
+                } else {
+
+                }
             }
         }
-        return true
     }
 
-    private fun showPermissionDialog() {
-        val dialogBuilder = AlertDialog.Builder(this)
-        dialogBuilder.setMessage("Necesitamos ciertos permisos para continuar")
-            .setPositiveButton("Activar") { dialog, _ ->
-                // Abre la pantalla de configuración de la aplicación para que el usuario active los permisos
-                openAppSettings()
-                dialog.dismiss()
-            }
-            .setNegativeButton("Cancelar") { dialog, _ ->
-                dialog.dismiss()
-                finish() // Puedes finalizar la actividad si el usuario cancela
-            }
-            .setCancelable(false)
-        val dialog = dialogBuilder.create()
-        dialog.show()
-    }
-
-    private fun openAppSettings() {
-        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-        val uri = Uri.fromParts("package", packageName, null)
-        intent.data = uri
-        startActivity(intent)
-    }
 
 
     private fun validateCredentials(alias: String, pass: String): Boolean {
@@ -206,6 +216,7 @@ class ysv_login_activity : AppCompatActivity() {
 
                         }else{
                             Log.e("ERROR", user.detail)
+                            showLoginErrorDialog(user.detail)
                         }
 
                     }else{
@@ -223,4 +234,22 @@ class ysv_login_activity : AppCompatActivity() {
         finish()
     }
 
+    fun arePermissionsGranted(): Boolean {
+        return ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun showLoginErrorDialog(msj: String) {
+        if (!isFinishing) { // Verificar que la actividad no esté finalizando
+            runOnUiThread {
+                AlertDialog.Builder(this)
+                    .setTitle("Error de Inicio de Sesión")
+                    .setMessage("Hubo un error al iniciar sesión. Por favor, verifica tus credenciales." + msj)
+                    .setPositiveButton("OK") { dialog, _ ->
+                        dialog.dismiss()
+                    }
+                    .show()
+            }
+        }
+    }
 }

@@ -119,7 +119,6 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
         android:background="@drawable/custom_edittext"
-
         android:padding="8dp"
         android:gravity="start|top"
         android:inputType="textMultiLine"
@@ -128,7 +127,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tvDescripEquipo" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btnUpTeam"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -138,7 +137,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tvLogotipo" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/btnPhotoTeam"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -158,7 +157,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button2" />
+        app:layout_constraintTop_toBottomOf="@+id/btnPhotoTeam" />
 
     <TextView
         android:id="@+id/tvFotoEquipo"
@@ -171,6 +170,6 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
+        app:layout_constraintTop_toBottomOf="@+id/btnUpTeam" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

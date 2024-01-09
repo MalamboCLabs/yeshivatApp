@@ -1,10 +1,12 @@
 package com.vms.yeshivatapp.ui.fragments.users
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -19,7 +21,9 @@ import com.vms.yeshivatapp.databinding.YsvMenuHeaderBinding
 import com.vms.yeshivatapp.ui.fragments.users.equipo.ysv_equipo_fragment
 import com.vms.yeshivatapp.ui.fragments.users.live.ysv_envivo_fragment
 import com.vms.yeshivatapp.ui.fragments.users.partidos.ysv_partidos_fragment
+import com.vms.yeshivatapp.ui.fragments.users.temporadas.ysv_temporadas_fragment
 import com.vms.yeshivatapp.ui.fragments.utilsTest.TestDialogsUtils
+import com.vms.yeshivatapp.ui.login.ysv_login_activity
 import kotlinx.coroutines.*
 
 class ysv_main_user_fragment: AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -88,15 +92,38 @@ class ysv_main_user_fragment: AppCompatActivity(), NavigationView.OnNavigationIt
                 .replace(R.id.fragment_container, ysv_equipo_fragment()).commit()
             R.id.ysvPartidos -> supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, ysv_partidos_fragment()).commit()
-            R.id.ysvTestUtils  -> supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, TestDialogsUtils()).commit()
+            R.id.ysvTemporadas -> supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, ysv_temporadas_fragment()).commit()
+            R.id.logout -> {
+                logout()
+
+            }
         }
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
 
+    private fun logout() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val db = Room.databaseBuilder(application, YSVBaseDeDatos::class.java, "ysvDataBase").build()
+            val userDao = db.entityDao()
+            userDao.deleteUsers()
+
+            withContext(Dispatchers.Main) {
+                // Este bloque se ejecutará en el hilo principal
+                val intent = Intent(applicationContext, ysv_login_activity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                startActivity(intent)
+            }
+
+        }
+
+    }
+
     override fun onBackPressed() {
         super.onBackPressed()
     }
+
+
 
 }

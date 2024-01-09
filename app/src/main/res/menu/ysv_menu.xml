@@ -20,13 +20,17 @@
             android:icon="@drawable/ysv_temporada_icon"
             android:title="Temporadas"
             />
-        <item android:id="@+id/ysvAdmin"
+        <!--<item android:id="@+id/ysvAdmin"
             android:icon="@drawable/ysv_admin_icon"
             android:title="Administrador"
+            />-->
+        <item android:id="@+id/logout"
+            android:icon="@drawable/baseline_logout_24"
+            android:title="Salir"
             />
-        <item android:id="@+id/ysvTestUtils"
+        <!--<item android:id="@+id/ysvTestUtils"
             android:icon="@drawable/ysv_admin_icon"
             android:title="TEST UTILS"
-            />
+            />-->
     </group>
 </menu>

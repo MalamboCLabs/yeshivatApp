@@ -43,6 +43,7 @@ class ysv_partidos_fragment : Fragment()  {
             ViewModelProvider(this).get(YsvPartidosViewModel::class.java)
         _binding = YsvPartidosFragmentBinding.inflate(inflater, container, false)
         var root: View = binding.root
+
         val dataList = mutableListOf<TemporadaPartidos>()
         recyclerView = binding.rcvPartidos
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -89,6 +90,7 @@ class ysv_partidos_fragment : Fragment()  {
                 // Respond to dismiss events.
             }
         }
+
         return root
     }
     override fun onStart() {

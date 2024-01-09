@@ -47,6 +47,7 @@ class YsvPhothoPreiewDialog(bitPhto: String, typeImage: Int, nombreEquipo: Strin
         val decodedByte = Base64.decode(photoP, Base64.DEFAULT)
         val bitmap = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.size)
         mBinding.imageView6.setImageBitmap(bitmap)
+
         mBinding.btnRetry.setOnClickListener {
             val isBottonPressed = true
             val isImage = type
@@ -54,6 +55,9 @@ class YsvPhothoPreiewDialog(bitPhto: String, typeImage: Int, nombreEquipo: Strin
             dismiss()
         }
         mBinding.btnAceptt.setOnClickListener {
+            val isBottonPressed = false
+            val isImage = type
+            buttonStateListener?.invoke(isBottonPressed, type)
             registerImage(photoP)
         }
 
@@ -80,7 +84,7 @@ class YsvPhothoPreiewDialog(bitPhto: String, typeImage: Int, nombreEquipo: Strin
                 if(image != null){
                     Log.e("DETALLES DE LA CARGA DE IMAGEN", image.status)
                     if(image.status.equals("SUCCESS")){
-                        val isBottonPressed = true
+                        val isBottonPressed = false
                         buttonStateListener?.invoke(isBottonPressed, type)
                         dialog?.dismiss()
                     }
